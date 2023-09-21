@@ -1,0 +1,77 @@
+<div class="container">
+	<div class="container-fluid text-center p-4">
+		<h2>Sign Up!</h2>
+
+		<form class="align-items-center" href="{{ url_for('auth.signup') }}" method="post">
+			<div class="form-floating m-4">
+				<input type="email" name="email" class="form-control" id="floatingEmail" placeholder="Email" required>
+				<label for="floatingEmail">Email address</label>
+			</div>
+			<div class="form-floating m-4">
+				<input type="text" name="name" class="form-control" id="floatingName" placeholder="Name" required>
+				<label for="floatingName">Name</label>
+			</div>
+			<div class="form-floating m-4">
+				<input type="text" name="last_name" class="form-control" id="floatingLastName" placeholder="Last Name" required>
+				<label for="floatingLastName">Last Name</label>
+			</div>
+			<div class="form-floating m-4">
+				<input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password"
+					required>
+				<label for="floatingPassword">Password</label>
+			</div>
+			<div class="form-floating m-4">
+				<input type="password" name="password_repeat" class="form-control" id="floatingPasswordRepeat"
+					placeholder="Password" required>
+				<label for="floatingPasswordRepeat">Password Repeat</label>
+			</div>
+			<div class="col-auto">
+				<button type="submit" class="btn btn-primary">Sign up</button>
+			</div>
+
+		</form>
+	</div>
+</div>
+
+<script>
+	function formSubmit(event, form) {
+		var request = new XMLHttpRequest();
+		request.open('POST', form.attr("href"), true);
+		request.onload = function () {
+			if (request.status == 200) {
+				title = "Success";
+				body = "You were successfully registered. Please, check your email and verify your account.";
+				type = "success";
+
+				if ($("#modalView")) {
+					$("#modalView").modal("hide");
+				}
+
+			} else if (request.status == 405) {
+				title = "Error";
+				body = "Sorry, but the password does not match.";
+				type = "danger";
+			} else {
+				title = "Error";
+				body = "Sorry, but the email is already registered.";
+				type = "danger";
+
+			}
+			add_and_show_toast(title, body, type);
+		};
+
+		request.onerror = function () {
+		};
+
+		request.send(new FormData(event.target));
+		event.preventDefault();
+	}
+
+	$(document).ready(function () {
+		$("form").submit(function (event) {
+			formSubmit(event, $(this));
+		});
+	})
+
+
+</script>

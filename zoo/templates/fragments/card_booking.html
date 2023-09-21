@@ -1,0 +1,32 @@
+{% extends 'basics/card.html' %}
+
+{% block onclick %}
+{{ url_for('main.activity', activity_id=booking.activity_schedule.activity.id) }}
+{% endblock onclick %}
+
+{% block img_src %}
+{{ booking.activity_schedule.activity.image }}
+{% endblock img_src %}
+
+{% block class %}
+{{ super() }}
+{% if datetime.now() > booking.activity_schedule.timestamp %}
+bg-secondary text-white
+{% else %}
+{% endif %}
+{% endblock class %}
+
+{% block height %}
+{% endblock height %}
+
+{% block body %}
+	<h5 class="card-title">{{ booking.activity_schedule.activity.name }}</h5>
+	<p>Date: {{ booking.activity_schedule.timestamp.date() }}</p>
+	<p>Time: {{ booking.activity_schedule.timestamp.time() }}</p>
+	<p>Booked: {{ booking.seats_booked }}</p>
+	<p>Total Price: {{ booking.seats_booked*booking.activity_schedule.price }}€</p>
+
+	{% if datetime.now() > booking.activity_schedule.timestamp %}
+	<p class="position-absolute btn-secondary top-0 start-0 m-2 p-1 rounded">Passed</p>
+	{% endif %}
+{% endblock body %}

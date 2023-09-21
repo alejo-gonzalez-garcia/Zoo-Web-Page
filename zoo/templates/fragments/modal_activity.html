@@ -1,0 +1,35 @@
+<div class="container">
+	<div class="row">
+		<div class="col-5 p-4">
+			<img class="rounded img-fluid " width="100%" src="{{ activity.image}}" alt="">
+		</div>
+		<div class="col-7" style="height: 100%;">
+			<h1>{{ activity.name }}</h1>
+			<div class=" "><img src='/static/images/birthday.png' , width="27" , height="37"> <b> Type of Activity: </b> {{ activity.type.name }}</div>
+			<div class=" "><img src='/static/images/age.png' , width="20" , height="27"> <b>Minimum age: </b> {{ activity.minimum_age }}</div>
+			<div class=" "><img src='/static/images/parent.png' , width="27" , height="37"> <b> Is parent required? </b> {{ "Yes" if activity.is_parent_required else "No"}}</div>
+			<div class=" "><img src='/static/images/type.png' , width="28" , height="24"> <b> Description: </b> {{ activity.description }}</div>
+
+			{% if not current_user.is_anonymous and current_user.role == current_user.role.__class__.manager %}
+			<a class="btn btn-primary position-absolute top-0 end-0 m-3"
+				href="{{ url_for('main.activity_edit', activity_id=activity.id) }}">edit</a>
+			{% endif %}
+
+		</div>
+
+		{% if activity.get_future_schedules() %}
+		<p>Available schedules:</p>
+		<div class="overflow-auto">
+			<div class="d-inline-flex flex-row flex-nowrap justify-content-start" >
+				{% for schedule in activity.get_future_schedules() %}
+				<div class="col container">
+					{% include 'fragments/card_activity_schedule.html' %}
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		{% else %}
+		<p>There are no schedules for this actvitiy</p>
+		{% endif %}
+	</div>
+</div>

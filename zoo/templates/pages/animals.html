@@ -1,0 +1,134 @@
+{% extends 'basics/base.html' %}
+{% import 'basics/modal.html' as modal %}
+
+{% block js %}
+	{{ super() }}
+	{{ modal.js() }}
+	<script>
+	function formChange(event, form) {
+		var dangerExtinction = $('select[name="dangerExtinction"]').val()
+		var type = $('select[name="type"]').val()
+		var diet = $('select[name="diet"]').val()
+		var continent = $('select[name="continent"]').val()
+
+		$("#gridAnimal").children().each(function(i, element) {
+			$(element).show()
+			if (dangerExtinction) {
+				if ((dangerExtinction == "No" && $(element).children().hasClass("danger_extinction")) || (dangerExtinction == "Yes" && !$(element).children().hasClass("danger_extinction")) ) {
+					$(element).hide();
+				}
+			}
+
+			if (type) {
+				if (!$(element).children().hasClass(type)) {
+					$(element).hide();
+				}
+			}
+
+			if (diet) {
+				if (!$(element).children().hasClass(diet)) {
+					$(element).hide();
+				}
+			}
+
+			if (continent) {
+				if (!$(element).children().hasClass(continent)) {
+					$(element).hide();
+				}
+			}
+		});
+		event.preventDefault();
+	}
+
+	$(document).ready(function() {
+		form = $("#formSort")
+		$("select,input").change(function(event) {
+			formChange(event, $(this));
+		});
+
+		$("#btnReset").click(function(event) {
+			history.go(0);
+			event.preventDefault();
+
+		});
+	})
+		
+	</script>
+{% endblock js %}
+
+{% block content %}
+
+		<div class="container mt-3 mb-3">
+			<div class="row text-center">
+				<form id="formSort d-inline-flex flex-row flex-nowrap" class="align-items-center">
+					<div class="input-group container-fluid row">
+						
+						<div class="col">
+						<div class="m-1 form-floating">
+							<select class="form-select" name="dangerExtinction" id="floatingDangerExtinction">
+								<option selected value=""></option>
+								<option value="Yes">Yes</option>
+								<option value="No">No</option>
+							</select>
+							<label for="floatingDangerExtinction">Danger of Extinction</label>
+						</div>
+						</div>
+						<div class="col">
+							
+						<div class="form-floating m-1">
+							<select class="form-select" name="type" id="floatingType">
+								<option selected value=""></option>
+								{% for type in animal_types %}
+								<option value="{{ type.name }}">{{ type.name }}</option>
+								{% endfor %}
+							</select>
+							<label for="floatingType">Type</label>
+						</div>
+						</div>
+
+						<div class="col">
+						<div class="form-floating m-1">
+							<select class="form-select" name="diet" id="floatingDiet">
+								<option selected value=""></option>
+								{% for diet in animal_diets %}
+								<option value="{{ diet.name }}">{{ diet.name }}</option>
+								{% endfor %}
+							</select>
+							<label for="floatingDiet">Diet</label>
+						</div>
+						</div>
+
+						<div class="col">
+						<div class="form-floating m-1">
+							<select class="form-select" name="continent" id="floatingContinent">
+								<option selected value=""></option>
+								{% for continent in animal_continents %}
+								<option value="{{ continent.name }}">{{ continent.name }}</option>
+								{% endfor %}
+							</select>
+							<label for="floatingContinent">Continent</label>
+						</div>
+						</div>
+
+						<div class="col mb-2">
+						<div class="form-floating m-1 h-100">
+							<button id="btnReset" class="btn btn-danger w-100 h-100">Reset</button>
+						</div>
+						</div>
+
+					</div>
+
+				</form>
+			</div>
+			<div id="gridAnimal" class="row row-cols-4 m-2">
+				{% for animal in animals %}
+					<div class="col">
+						{% include 'fragments/card_animal.html' %}
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+
+
+		{{ modal.html() }}
+{% endblock content %}

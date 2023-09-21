@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="{{ url_for('main.index') }}">Space Zoo</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
+			aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarToggler">
+			<ul class="navbar-nav container-fluid d-inline-flex">
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('main.animals') }}">Animals</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('main.activities') }}">Activities</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('main.contact_us') }}">Contact Us</a>
+				</li>
+
+				{% if current_user.is_authenticated %}
+				<li class="nav-item dropdown ms-auto ">
+					<a class="nav-link dropdown-toggle btn-warning text-dark rounded p-2 " href="#" id="navbarDropdown"
+						role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ current_user.name }}</a>
+					<ul class="dropdown-menu dropdown-menu-end bg-warning text-center" aria-labelledby="navbarDropdown">
+						<li class="nav-item">
+							<a class="nav-link text-dark" href="{{ url_for('main.profile') }}">Profile</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" href="{{ url_for('auth.logout') }}">Log Out</a>
+						</li>
+					</ul>
+				</li>
+				{% else %}
+				<div class="ms-auto row row-cols-auto">
+					<li class="col nav-item my-auto">
+						<button type="button" class="btn btn-primary text-light nav-link p-1 ps-2 pe-2 click link-to-modal"
+							href="{{ url_for('auth.login') }}">Log in</button>
+					</li>
+					<li class="col nav-item my-auto">
+						<button type="button" class="btn btn-warning text-dark nav-link p-1 ps-2 pe-2 click link-to-modal"
+							href="{{ url_for('auth.signup') }}">Sign Up</button>
+					</li>
+				</div>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>

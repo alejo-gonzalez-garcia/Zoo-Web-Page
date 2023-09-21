@@ -1,0 +1,20 @@
+{% extends 'basics/card.html' %}
+
+{% block onclick %}
+{{ url_for('main.activity', activity_id=activity.id) }}
+{% endblock onclick %}
+
+
+{% block img_src %}
+{{ activity.image }}
+{% endblock img_src %}
+
+{% block body %}
+	<h4 class="card-title">{{ activity.name }}</h4>
+	<h6>
+		{{ activity.type.name }}
+	</h6>
+	<h6>
+		Minimum Age: {{ activity.minimum_age }}
+	</h6>
+{% endblock body %}

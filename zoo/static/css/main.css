@@ -1,0 +1,23 @@
+@font-face{
+	font-family: main;
+	/* src: url('SecularOne-Regular.ttf'); */
+	src: url('NerkoOne-Regular.ttf');
+}
+
+body, html {
+	height: 100%;
+	width: 100%;
+	overflow-y:auto;
+	overflow-x:auto;
+}
+
+#toastContainer {
+	z-index: 99999;
+}
+
+
+* {
+	font-family: main; 
+	font-size: 103%;
+}
+

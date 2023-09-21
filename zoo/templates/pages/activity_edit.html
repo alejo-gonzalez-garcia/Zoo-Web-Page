@@ -1,0 +1,122 @@
+{% extends 'basics/base.html' %}
+
+{% block js %}
+{{ super()}}
+
+<script>
+	function formSubmit(event, form) {
+		var request = new XMLHttpRequest();
+		request.open('POST', form.attr("href"), true);
+		request.onload = function() {
+			if (request.status == 200) {
+				title = "Success";
+				body = "The activity has been successfully updated.";
+				type = "success";
+			} else {
+				title = "Error";
+				body = "Sorry, but there was an error.";
+				type = "danger";
+
+			}
+			add_and_show_toast(title, body, type);
+		};
+
+		request.onerror = function() {
+		};
+
+		request.send(new FormData(event.target));
+		event.preventDefault();
+	}
+
+	$(document).ready(function() {
+		$("form").submit(function(event) {
+			formSubmit(event, $(this));
+		});
+	})
+	
+
+</script>
+
+{% endblock js %}
+
+{% block content %}
+<div class="row h-100 m-3 pb-4">
+	<div class="col-1">
+
+	<button type="submit" class="btn btn-danger click mt-3" href="{{ url_for('main.activities') }}">Back</button>
+		
+	</div>
+	<div class="col-4 container-fluid align-items-center h-100">
+		<div class="row align-items-center h-100">
+			
+	
+<form class="align-items-center col" href="{{ url_for('main.activity_edit', activity_id=activity.id) }}" method="post">
+	<h1 class="text-center">Edit Activity</h1>
+	<div class="form-floating m-4 visually-hidden">
+		<input type="number" name="activity_id" class="form-control" id="floatingInput" required readonly value="{{ activity.id }}">
+		<label for="floatingInput">Activity Id</label>
+	</div>
+	<div class="form-floating m-4">
+		<input type="text" name="name" class="form-control" id="floatingName" value="{{ activity.name }}" required>
+		<label for="floatingName">Name</label>
+	</div>
+	<div class="form-floating m-4">
+		<select class="form-select" name="type" id="floatingType">
+			{% for type in activity_types %}
+			<option {% if activity.type == type %}selected{% endif %} value="{{ type.name }}">{{ type.name }}</option>
+			{% endfor %}
+		</select>
+		<label for="floatingType">Type</label>
+	</div>
+	<div class="form-floating m-4">
+		<input type="text" name="image" class="form-control" id="floatingImage" value="{{ activity.image }}" required>
+		<label for="floatingImage">Image</label>
+	</div>
+	<div class="form-floating m-4">
+		<input type="number" min="0" name="minimum_age" class="form-control" id="floatingMinimumAge" value="{{ activity.minimum_age }}" required>
+		<label for="floatingMinimumAge">Minimum Age</label>
+	</div>
+	<div class="form-check m-4">
+		<input type="checkbox" name="is_parent_required" class="form-check-input" id="floatingIsParentRequired" {% if activity.is_parent_required == True %}checked{% endif %}>
+		<label class="form-check-label" for="floatingIsParentRequired">Is Parent Required?</label>
+	</div>
+	<div class="form-check m-4">
+		<input type="checkbox" name="is_featured" class="form-check-input" id="floatingIsFeatured" {% if activity.is_featured == True %}checked{% endif %}>
+		<label class="form-check-label" for="floatingIsFeatured">Is Featured?</label>
+	</div>
+	<div class="form-floating m-4">
+		<textarea rows="6" name="description" class="form-control" id="floatingDescription"> {{ activity.description }}</textarea>
+		<label for="floatingDescription">Description</label>
+	</div>
+	<div class="col-auto text-center">
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</div>
+
+</form>
+		</div>
+
+		</div>
+		<div class="col-6 text-center">
+	<button type="submit" class="btn btn-primary link-to-modal click mt-3" href="{{ url_for('main.activity_schedule_new', activity_id=activity.id) }}">New Schedule</button>
+			
+		<div class="container mt-1">
+			{% if activity.schedules %}
+			<div class="row row-cols-3">
+				{% for schedule in activity.schedules %}
+					<div class="col">
+						{% include 'fragments/card_activity_schedule_edit.html' %}
+					</div>
+				{% endfor %}
+			</div>
+			{% else %}
+			<p>There are no schedules for this activity.</p>
+			  
+			{% endif %}
+		</div>
+		</div>
+
+		<div class="col-1 position-relative">
+			
+		</div>
+</div>
+{% endblock content %}

@@ -1,0 +1,25 @@
+{% extends 'basics/base.html' %}
+
+{% block content %}
+<div class="container-fluid position-relative mt-3 mb-3">
+
+
+	<div class="container">
+		<div class="row row-cols-4 m-2">
+			{% for activity in activities %}
+			<div class="col">
+				{% include 'fragments/card_activity.html' %}
+			</div>
+			{% endfor %}
+		</div>
+
+	</div>
+
+	{% if not current_user.is_anonymous and current_user.role == current_user.role.__class__.manager %}
+	<a class="btn btn-primary position-absolute top-0 end-0 m-3" href="{{ url_for('main.activity_new') }}">New
+		Activity</a>
+	{% endif %}
+
+</div>
+
+{% endblock content %}

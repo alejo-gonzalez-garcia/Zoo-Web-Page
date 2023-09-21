@@ -1,0 +1,87 @@
+<div class="container text-center">
+	<div class="row">
+		<div class="col-5 p-4">
+			<img class="rounded img-fluid " width="100%" src="{{ activity_schedule.activity.image}}" alt="">
+		</div>
+		<div class="container-fluid col-7 position-relative align-items-center">
+			<button type="submit" class="btn btn-danger link-to-modal click position-absolute top-0 start-0 m-1"
+				href="{{ url_for('main.activity', activity_id=activity_schedule.activity.id) }}">Back</button>
+			<div class="row align-items-center h-100">
+				<div class="col">
+
+
+					<h2>Book seats for {{ activity_schedule.activity.name }}</h2>
+					<h3>Seats available: {{ activity_schedule.get_available() }}</h3>
+					<h3>Price per seat: {{ activity_schedule.price }}€</h3>
+					{% if activity_schedule.activity.is_parent_required %}
+					<p>Remember, that at least one adult must go with the children.</p>
+
+					{% endif %}
+
+					<form class="col-10 align-items-center container-fluid" href="{{ url_for('main.book_post') }}"
+						method="post">
+						<div class="form-floating m-4 align-middle">
+							<input type="number" name="seats" class="form-control" id="floatingInput" placeholder="1" required>
+							<label for="floatingInput">Seats to book</label>
+						</div>
+						<div class="form-floating m-4 visually-hidden">
+							<input type="number" name="activity_schedule_id" class="form-control" id="floatingInput" placeholder="1"
+								readonly value="{{ activity_schedule.id}}">
+							<label for="floatingInput">schedule id</label>
+						</div>
+						<div class="col-auto">
+							<button type="submit" class="btn btn-primary">Book</button>
+						</div>
+
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script>
+	function formSubmit(event, form) {
+		var request = new XMLHttpRequest();
+		request.open('POST', form.attr("href"), true);
+		request.onload = function() {
+			if (request.status == 200) {
+				title = "Success";
+				body = "Your booking has been successfully made. We are exited to see you soon!";
+				type = "success";
+
+				if ($("#modalView")) {
+					$("#modalView").modal("hide");
+				}
+			} else if (request.status == 406) {
+				title = "Error";
+				body = "Unable to book the seats. Remember that you cannot book more seats than there are available.";
+				type = "danger";
+			} else {
+				title = "Error";
+				body = "Sorry, but there was an error. Please, try again later.";
+				type = "danger";
+			}
+			add_and_show_toast(title, body, type);
+			form.trigger("reset")
+		};
+
+		request.onerror = function() {
+			Console.log("error")
+			// request failed
+		};
+
+		request.send(new FormData(event.target));
+		event.preventDefault();
+	}
+
+	$(document).ready(function() {
+		$("form").submit(function(event) {
+			formSubmit(event, $(this));
+		});
+	})
+	
+
+</script>

@@ -1,0 +1,52 @@
+<div class="container">
+		<div class="container-fluid text-center p-4">
+			<h2>Login</h2>
+			<form id="formLogin" class="align-items-center" href="{{ url_for('auth.login') }}" method="post">
+				<div class="form-floating m-4">
+					<input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
+					<label for="floatingInput" class="form-label">Email address</label>
+				</div>
+				<div class="form-floating m-4">
+					<input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+					<label for="floatingPassword">Password</label>
+				</div>
+        <div class="col-auto">
+					<button type="submit" class="btn btn-primary">Log in</button>
+				</div>
+
+			</form>
+		</div>
+</div>
+
+<script>
+	function formSubmit(event, form) {
+		var request = new XMLHttpRequest();
+		request.open('POST', form.attr("href"), true);
+		request.onload = function() {
+			if (request.status == 200) {
+				history.go(0);
+
+			} else {
+				title = "Error";
+				body = "Sorry, but there was an error. Please, try again.";
+				type = "danger";
+				add_and_show_toast(title, body, type);
+
+			}
+		};
+
+		request.onerror = function() {
+		};
+
+		request.send(new FormData(event.target));
+		event.preventDefault();
+	}
+
+	$(document).ready(function() {
+		$("form").submit(function(event) {
+			formSubmit(event, $(this));
+		});
+	})
+	
+
+</script>

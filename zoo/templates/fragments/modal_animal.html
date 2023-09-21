@@ -1,0 +1,32 @@
+<div class="container">
+	<div class="row">
+		<div class="col-6 p-5">
+			<img class="rounded" width="100%" src="{{animal.image}}" alt="">
+			<p class="p-2">{{ animal.description }}</p>
+		</div>
+		<div class="col-6 pt-5">
+			<h1 class="mb-3">{{ animal.name }}</h1>
+			<div class=" "> <img src='/static/images/scientific_name.png' , width="30" , height="38"> <b> Scientific Name: </b> {{
+				animal.scientific_name }}</div>
+
+			{% if animal.is_danger_extinction: %}
+			<div class=" "> <img src='/static/images/is_danger_extinction.png' , width="37" , height="37"> <b> The {{animal.name}} is
+					under danger of extinction! </b></div>
+			{% else %}
+			<div class=" "> <img src='/static/images/is_danger_extinction.png' , width="37" , height="37"> <b> The {{animal.name}} is not
+					under danger of extinction! </b></div>
+			{% endif %}
+
+			<div class=" "><img src='/static/images/type.png' , width="28" , height="26"> <b> Type: </b> {{ animal.type.name }}</div>
+			<div class=" "> <img src='/static/images/diet2.png' , width="37" , height="29"> <b> Diet: </b> {{ animal.diet.name }}</div>
+			<div class=" "> <img src='/static/images/weight.png' , width="37" , height="35"> <b> Weight: </b> {{ animal.weight }} kg</div>
+			<div class=" "> <img src='/static/images/size.png' , width="30" , height="28"> <b> Size: </b> {{ animal.size }} cm </div>
+			<div class=" "> <img src='/static/images/birthday.png' , width="27" , height="37"> <b> Birthdate: </b> {{ animal.birthdate.year }}</div>
+			<div class=" "> <img src='/static/images/continent.png' , width="29" , height="26"> <b> Continent: </b> {{ animal.continent.name }}</div>
+			<div class=" "> <img src='/static/images/habitat1.png' , width="29" , height="26"> <b> Habitats: </b> {{ animal.habitat.name }}</div>
+		</div>
+
+	</div>
+
+</div>
+</div>

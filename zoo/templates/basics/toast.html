@@ -1,0 +1,34 @@
+{% macro html() -%}
+<div id="toastContainer" class="toast-container position-fixed top-0 start-50 translate-middle-x pt-3">
+</div>
+{%- endmacro %}
+
+{% macro js() -%}
+<script>
+	function get_html_toast(id, title, body, type) {
+		return `
+			<div id="${id}" class="toast bg-${type} text-light" role="alert" aria-live="assertive" aria-atomic="true">
+	<div class="d-flex">
+			<div class="toast-body text-center ">
+			<h4>${title}</h4>
+			<h6>${body}</h6>
+		</div>
+		<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+	</div>
+</div>
+		`;
+	}
+
+	function add_and_show_toast(title, body, type) {
+		const id = Math.random().toString().substr(2, 8);
+
+		if ($("#toastContainer")) {
+			const html = get_html_toast(id, title, body, type)
+			$("#toastContainer").html(html);
+
+			const toast = new bootstrap.Toast($("#"+id))
+			toast.show();
+		}
+	}
+</script>
+{%- endmacro %}

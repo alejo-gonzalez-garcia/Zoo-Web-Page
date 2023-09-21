@@ -1,0 +1,24 @@
+{% extends 'basics/card.html' %}
+
+{% block onclick %}
+{{ url_for('main.activity_schedule_edit', activity_schedule_id=schedule.id) }}
+{% endblock onclick %}
+
+{% block height %}
+{% endblock height %}
+
+{% block img %}
+{% endblock img %}
+
+{% block body %}
+<div class="row align-items-center h-100">
+	<div class="col">
+
+		<p class="card-title">Date: {{ schedule.timestamp.date() }}</p>
+		<p class="card-title">Time: {{ schedule.timestamp.time() }}</p>
+		<p>Total: {{ schedule.total }}</p>
+		<p>Price: {{ schedule.price }}€</p>
+		
+	</div>
+</div>
+{% endblock body %}

@@ -1,0 +1,25 @@
+{% extends 'basics/card.html' %}
+
+{% block onclick %}
+{{ url_for('main.animal', animal_id=animal.id) }}
+{% endblock onclick %}
+
+{% block img_src %}
+{{ animal.image }}
+{% endblock img_src %}
+
+{% block class -%}
+{{ super() }}
+{% if animal.is_danger_extinction %}danger_extinction{% endif %}
+{{ animal.type.name }}
+{{ animal.diet.name }}
+{{ animal.continent.name }}
+{% endblock class %}
+
+{% block body %}
+	<h3 class="card-title">{{ animal.name }}</h3>
+	<h7 class="card-subtitle"> Original from {{  animal.continent.name }}</h7>
+	
+
+
+{% endblock body %}

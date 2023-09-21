@@ -1,0 +1,81 @@
+<div class="container">
+	<div class="row">
+		<div class="col-3">
+		</div>
+		<div class="container-fluid col-6 h-100 align-items-center" style="height: 100%;">
+			<div class="col align-items-center container-fluid text-center">
+				<h2>Create new schedule</h2>
+				
+
+			<form class="align-items-center container-fluid"
+				href="{{ url_for('main.activity_schedule_new', activity_id=activity.id) }}" method="post">
+				<div class="form-floating m-4 visually-hidden">
+					<input type="number" name="activity_id" class="form-control" id="floatingInput" required readonly
+						value="{{ activity.id }}">
+					<label for="floatingInput">Activity id </label>
+				</div>
+				<div class="form-floating m-4">
+					<input type="number" min="0" name="total" class="form-control" id="floatingTotal" required>
+					<label for="floatingTotal">Total</label>
+				</div>
+				<div class="form-floating m-4">
+					<input type="text" name="timestamp" class="form-control" id="floatingTimestamp" required>
+					<label for="floatingTimestamp">Timestamp</label>
+				</div>
+				<div class="form-floating m-4">
+					<input type="float"  min="0" name="price" class="form-control" id="floatingPrice" required>
+					<label for="floatingPrice">Price (€)</label>
+				</div>
+				<div class="cols-auto">
+
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			</form>
+			</div>
+		</div>
+		<div class="col-3">
+		</div>
+	</div>
+</div>
+
+<script>
+	function formSubmit(event, form) {
+		var request = new XMLHttpRequest();
+		request.open('POST', form.attr("href"), true);
+		request.onload = function() {
+			if (request.status == 200) {
+
+				if ($("#modalView")) {
+					$("#modalView").modal("hide");
+				}
+				history.go(0);
+			} else if (request.status == 406) {
+				title = "Error";
+				body = "Error with the information given. Remember the format of the date.";
+				type = "danger";
+			add_and_show_toast(title, body, type);
+			} else {
+				title = "Error";
+				body = "Sorry, but there was an error. Please, try again later.";
+				type = "danger";
+			add_and_show_toast(title, body, type);
+			}
+		};
+
+		request.onerror = function() {
+			Console.log("error")
+			// request failed
+		};
+
+		request.send(new FormData(event.target));
+		event.preventDefault();
+	}
+
+	$(document).ready(function() {
+		$("form").submit(function(event) {
+			formSubmit(event, $(this));
+		});
+	})
+	
+
+</script>

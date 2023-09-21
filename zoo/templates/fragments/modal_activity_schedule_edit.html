@@ -1,0 +1,96 @@
+<div class="container">
+	<div class="row">
+		<div class="col-2">
+		</div>
+		<div class="container-fluid col-8 h-100 align-items-center" style="height: 100%;">
+			<div class="col align-items-center container-fluid text-center">
+				<h2>Edit schedule</h2>
+				<p>Seats booked: {{ schedule.get_total_booked_seats() }}</p>
+
+			<form id="formEdit" class="align-items-center container-fluid"
+				href="{{ url_for('main.activity_schedule_edit', activity_schedule_id=schedule.id) }}" method="post">
+				<div class="form-floating m-4 visually-hidden">
+					<input type="number" name="schedule_id" class="form-control" id="floatingInput" required readonly
+						value="{{ schedule.id }}">
+					<label for="floatingInput">Schedule Id</label>
+				</div>
+				<div class="form-floating m-4">
+					<input type="number" min="0" name="total" class="form-control" id="date" value="{{ schedule.total }}"
+						required>
+					<label for="floatingTotal">Total</label>
+				</div>
+				<div class="form-floating m-4">
+					<input type="text" name="timestamp" class="form-control" id="floatingTimestamp" value="{{ schedule.timestamp }}" required>
+					<label for="floatingTimestamp">Timestamp</label>
+				</div>
+				<div class="form-floating m-4">
+					<input type="float"  min="0" name="price" class="form-control" id="floatingPrice" value="{{ schedule.price }}"
+						required>
+					<label for="floatingPrice">Price (€)</label>
+				</div>
+				<div class="col-auto">
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			</form>
+
+			<form id="formDelete" class="align-items-center mt-2" href="{{ url_for('main.activity_schedule_remove', activity_schedule_id=schedule.id) }}" method="post">
+				<div class="col-auto">
+					<button type="submit" class="btn btn-danger">Remove</button>
+				</div>
+			</form>
+
+		</div>
+
+		</div>
+		<div class="col-2">
+	</div>
+	</div>
+</div>
+
+<script>
+	function formSubmit(event, form) {
+		var request = new XMLHttpRequest();
+		request.open('POST', form.attr("href"), true);
+		request.onload = function() {
+			if (request.status == 200) {
+				if ($("#modalView")) {
+					$("#modalView").modal("hide");
+				}
+				history.go(0);
+			} else if (request.status == 406) {
+				title = "Error";
+				body = "Error with the information given. Remember the format of the timestamp.";
+				type = "danger";
+				add_and_show_toast(title, body, type);
+			} else if (request.status == 405) {
+				title = "Error";
+				body = "Error with the information given. Remember that the total must be greater than the ones booked.";
+				type = "danger";
+				add_and_show_toast(title, body, type);
+			} else {
+				title = "Error";
+				body = "Sorry, but there was an error. Please, try again later.";
+				type = "danger";
+				add_and_show_toast(title, body, type);
+			}
+		};
+
+		request.onerror = function() {
+			// request failed
+		};
+
+		request.send(new FormData(event.target));
+		event.preventDefault();
+	}
+
+	$(document).ready(function() {
+		$("#formDelete").submit(function(event) {
+			formSubmit(event, $(this));
+		});
+		$("#formEdit").submit(function(event) {
+			formSubmit(event, $(this));
+		});
+	})
+	
+
+</script>

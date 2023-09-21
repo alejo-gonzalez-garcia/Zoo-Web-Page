@@ -1,0 +1,83 @@
+{% extends 'basics/base.html' %}
+
+{% block js %}
+{{ super()}}
+
+<script>
+	function formSubmit(event, form) {
+		var request = new XMLHttpRequest();
+		request.open('POST', form.attr("href"), true);
+		request.onload = function() {
+			if (request.status == 200) {
+				title = "Success";
+				body = "Your information has been successfully sent to us. We will contact you as soon as possible";
+				type = "success";
+			} else {
+				title = "Error";
+				body = "Sorry, but there was an error. Please, try again later.";
+				type = "danger";
+
+			}
+			add_and_show_toast(title, body, type);
+			form.trigger("reset")
+		};
+
+		request.onerror = function() {
+		};
+
+		request.send(new FormData(event.target));
+		event.preventDefault();
+	}
+
+	$(document).ready(function() {
+		$("form").submit(function(event) {
+			formSubmit(event, $(this));
+		});
+	})
+</script>
+
+{% endblock js %}
+
+{% block content %}
+<div class="row text-center w-100">
+	<div class="col-1">
+	</div>
+	<div class="col-6">
+		<form id="formContact" class="align-items-center" href="{{ url_for('main.contact_us') }}" method="post">
+			<div class="form-floating m-4">
+				<input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
+				<label for="floatingInput">Email address</label>
+			</div>
+			<div class="form-floating m-4">
+				<input type="text" name="name" class="form-control" id="floatingName" placeholder="Name" required>
+				<label for="floatingName">Name</label>
+			</div>
+			<div class="form-floating m-4">
+				<input type="text" name="last_name" class="form-control" id="floatingLastName" placeholder="Last Name" required>
+				<label for="floatingLastName">Last Name</label>
+			</div>
+			<div class="form-floating m-4">
+				<textarea name="info" class="form-control" id="floatingInfo" placeholder="Info" required style="height: 20vh;"></textarea>
+				<label for="floatingInfo">Info</label>
+			</div>
+			<div class="col-auto">
+				<button id="buttonSubmit" type="submit" class="btn btn-primary">Submit</button>
+			</div>
+
+		</form>
+	</div>
+	<div class="container col-4">
+		<div class="row align-items-center h-100">
+			<div class="col">
+				<h3 class="">Phone: 6748283847</h3>
+				<h3>Email: contact@spacezoo.com</h3>
+			</div>
+				
+			
+		</div>
+	</div>
+	<div class="col-1">
+	</div>
+</div>
+{% endblock content %}
+

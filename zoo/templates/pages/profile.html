@@ -1,0 +1,19 @@
+{% extends 'basics/base.html' %}
+
+{% block content %}
+<div class="container-fluid mt-4 mb-4 text-center">
+
+	<h2>Hello {{ user.name }}!</h2>
+	<p>Here you can see your bookings.</p>
+
+	<div class="container">
+		<div class="row row-cols-4">
+			{% for booking in user.bookings %}
+			<div class="col">
+				{% include 'fragments/card_booking.html' %}
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% endblock %}

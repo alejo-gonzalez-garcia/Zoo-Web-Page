@@ -1,0 +1,9 @@
+<div class="card m-2 click {% block class %}link-to-modal{% endblock class %}" style="width: 15rem; {% block height %}height: 20rem;{% endblock height %} cursor: pointer;" href="{% block onclick %}{% endblock onclick %}">
+	{% block img %}
+	<img class="card-img-top img-fluid" src="{% block img_src %}{% endblock img_src %}" style="height: 13rem; object-fit: cover;" alt="">
+	{% endblock img %}
+	<div class="card-body text-center">
+		{% block body %}
+		{% endblock body %}
+	</div>
+</div>

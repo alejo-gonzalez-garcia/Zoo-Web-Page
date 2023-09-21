@@ -1,0 +1,57 @@
+{% extends 'basics/base.html' %}
+
+{% block content %}
+<div class="row container-fluid h-100">
+	<div class="col-1">
+
+	<button type="submit" class="btn btn-danger click mt-3" href="{{ url_for('main.activities') }}">Back</button>
+		
+	</div>
+	<div class="col-4 container-fluid align-items-center h-100">
+		<div class="row align-items-center h-100">
+			
+	
+<form class="align-items-center col" action="{{ url_for('main.activity_new') }}" method="post">
+	<h1 class="text-center">New Activity</h1>
+	<div class="form-floating m-4">
+		<input type="text" name="name" class="form-control" id="floatingName" required>
+		<label for="floatingName">Name</label>
+	</div>
+	<div class="form-floating m-4">
+		<select class="form-select" name="type" id="floatingType" aria-label="type">
+			{% for type in activity_types %}
+			<option value="{{ type.name }}">{{ type.name }}</option>
+			{% endfor %}
+		</select>
+		<label for="floatingType">Type</label>
+	</div>
+	<div class="form-floating m-4">
+		<input type="text" name="image" class="form-control" id="floatingImage" required>
+		<label for="floatingImage">Image</label>
+	</div>
+	<div class="form-floating m-4">
+		<input type="number" min="0" name="minimum_age" class="form-control" id="floatingMinimumAge" required>
+		<label for="floatingMinimumAge">Minimum Age</label>
+	</div>
+	<div class="form-check m-4">
+		<input type="checkbox" name="is_parent_required" class="form-check-input" id="floatingIsParentRequired" >
+		<label class="form-check-label" for="floatingIsParentRequired">Is Parent Required?</label>
+	</div>
+	<div class="form-check m-4">
+		<input type="checkbox" name="is_featured" class="form-check-input" id="floatingIsFeatured" >
+		<label class="form-check-label" for="floatingIsFeatured">Is Featured?</label>
+	</div>
+	<div class="form-floating m-4">
+		<textarea rows="6" name="description" class="form-control" id="floatingDescription" ></textarea>
+		<label for="floatingDescription">Description</label>
+	</div>
+	<div class="col-auto text-center">
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</div>
+
+</form>
+		</div>
+
+		</div>
+</div>
+{% endblock content %}

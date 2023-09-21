@@ -1,0 +1,38 @@
+{% extends 'basics/card.html' %}
+{% set available =  schedule.total - schedule.get_total_booked_seats() %}
+
+{% block onclick %}{% if available > 0 %}
+{% if current_user.is_authenticated %}
+{{ url_for('main.book', activity_schedule_id=schedule.id) }}
+{% else %}
+{{ url_for('auth.login') }}
+{% endif %}
+{% else %}{% endif %}{% endblock onclick %}
+
+{% block img %}
+{% endblock img %}
+
+{% block height %}
+{% endblock height %}
+
+{% block class %}
+{% if available <= 0 %}
+bg-danger
+{% else %}
+{{ super() }}
+{% endif %}
+
+{% endblock class %}
+
+{% block body %}
+<div class="row align-items-center h-100">
+	<div class="col">
+		<p class="card-title">Date: {{ schedule.timestamp.date() }}</p>
+		<p class="card-title">Time: {{ schedule.timestamp.time() }}</p>
+		<p>Available: {{ available }}</p>
+		<p>Price: {{ schedule.price }}€</p>
+		
+	</div>
+</div>
+
+{% endblock body %}
